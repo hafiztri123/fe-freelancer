@@ -1,26 +1,15 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme {
+  --color-navy-50: oklch(0.95 0.01 254.33);
+  --color-navy-100: oklch(0.9 0.02 254.19);
+  --color-navy-200: oklch(0.81 0.03 254.04);
+  --color-navy-300: oklch(0.72 0.05 253.9);
+  --color-navy-400: oklch(0.63 0.07 253.75);
+  --color-navy-500: oklch(0.54 0.08 253.6);
+  --color-navy-600: oklch(0.46 0.08 253.46);
+  --color-navy-700: oklch(0.39 0.07 253.31);
+  --color-navy-800: oklch(0.34 0.06 253.17); /* Your base color #2c3e50 */
+  --color-navy-900: oklch(0.28 0.05 253.02);
+  --color-navy-950: oklch(0.22 0.04 252.87);
 }
