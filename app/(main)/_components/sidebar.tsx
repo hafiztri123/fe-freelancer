@@ -10,7 +10,10 @@ import { IoIosSettings } from "react-icons/io";
 import { IoIosExit } from "react-icons/io";
 import Dialog from "./dialog";
 import Button from "./button";
+import { useRouter } from "next/navigation";
 export default function Sidebar(): JSX.Element {
+  const router = useRouter();
+
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isLogoutVisible, setIsLogoutVisible] = useState<boolean>(false);
 
@@ -97,7 +100,7 @@ export default function Sidebar(): JSX.Element {
               <Button
                 label="Log Out"
                 severity="danger"
-                onClick={() => setIsLogoutVisible(false)}
+                onClick={() => router.push("/login")}
               />
             </div>
           }

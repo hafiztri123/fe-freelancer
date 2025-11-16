@@ -13,3 +13,14 @@
   --color-navy-900: oklch(0.28 0.05 253.02);
   --color-navy-950: oklch(0.22 0.04 252.87);
 }
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
