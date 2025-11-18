@@ -1,5 +1,7 @@
 import { JSX } from "react";
 import { IconType } from "react-icons";
+import { AiOutlineLoading } from "react-icons/ai";
+
 
 
 interface ButtonProps {
@@ -7,6 +9,7 @@ interface ButtonProps {
   boldLabel?: boolean;
   severity: "danger" | "dark" | "blue" | "clear";
   icon?: IconType;
+  isLoading?: boolean;
   onClick: () => void;
 }
 export default function Button(props: ButtonProps): JSX.Element {
@@ -22,13 +25,17 @@ export default function Button(props: ButtonProps): JSX.Element {
       <button
         className={`py-2 px-4 w-full rounded ${
           severityMapping[props.severity]
-        } ${props.boldLabel ? "font-bold" : ""}`}
+        } ${props.boldLabel ? "font-bold" : ""} max-w-fit`}
         onClick={props.onClick}
       >
-        <div className="flex items-center justify-center gap-2">
-          {props.icon && <props.icon className="w-4 h-4" />}
-          {props.label}
+        {props.isLoading ? (
+          <AiOutlineLoading className="animate-spin" />
+        ) : (
+          <div className="flex items-center justify-center">
+            {props.icon && <props.icon className="w-5 h-5" />}
+            {props.label}
           </div>
+        )}
       </button>
     </>
   );

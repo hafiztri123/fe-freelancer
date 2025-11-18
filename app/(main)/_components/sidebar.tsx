@@ -8,7 +8,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { IoAnalytics } from "react-icons/io5";
 import { IoIosSettings } from "react-icons/io";
 import { IoIosExit } from "react-icons/io";
-import Dialog from "./dialog";
+import Dialog from "../../_components/dialog";
 import Button from "./button";
 import { useRouter } from "next/navigation";
 export default function Sidebar(): JSX.Element {
@@ -17,39 +17,67 @@ export default function Sidebar(): JSX.Element {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isLogoutVisible, setIsLogoutVisible] = useState<boolean>(false);
 
-  const sidebarMapping: { name: string; icon: IconType }[] = [
+  const sidebarMapping: {
+    name: string;
+    icon: IconType;
+    onClick: (i: number) => void;
+  }[] = [
     {
       name: "Home",
       icon: FaHome,
+      onClick: (index: number) => {
+        setTabIndex(index);
+        router.push("/home");
+      },
     },
     {
       name: "Projects",
       icon: FaFolder,
+      onClick: (index: number) => {
+        setTabIndex(index);
+        router.push("/projects");
+      },
     },
     {
       name: "Clients",
       icon: IoPeopleSharp,
+      onClick: (index: number) => {
+        setTabIndex(index);
+        router.push("/clients");
+      },
     },
     {
       name: "Invoices",
       icon: FaFileInvoice,
+      onClick: (index: number) => {
+        setTabIndex(index);
+        router.push("/invoices");
+      },
     },
     {
       name: "Analytics",
       icon: IoAnalytics,
+      onClick: (index: number) => {
+        setTabIndex(index);
+        router.push("/analytics");
+      },
     },
     {
       name: "Settings",
       icon: IoIosSettings,
+      onClick: (index: number) => {
+        setTabIndex(index);
+        router.push("/settings");
+      },
     },
   ];
 
   return (
     <>
       <div className="min-w-60 min-h-screen bg-[#2c3e50] flex flex-col">
-        <div className="p-5 flex items-center justify-center text-white text-[20px] font-bold border-b border-b-gray-600 gap-2">
+        <div className="p-5 flex items-center justify-start text-white text-[20px] font-bold border-b border-b-gray-600 gap-2">
           <Image src={logo} alt="logo" width={28} height={28} />
-          FreelanceFlow
+          ProjectQ.ID
         </div>
 
         <div className="flex flex-col justify-between h-full">
@@ -65,7 +93,7 @@ export default function Sidebar(): JSX.Element {
                       tabIndex === index &&
                       "border-l-4 border-l-navy-400 bg-navy-600"
                     } select-none`}
-                    onClick={() => setTabIndex(index)}
+                    onClick={() => item.onClick(index)}
                   >
                     <item.icon className="text-white" size={16} />
                     <span className="text-white">{item.name}</span>
@@ -88,7 +116,13 @@ export default function Sidebar(): JSX.Element {
         <Dialog
           header="Log Out"
           isVisible={isLogoutVisible}
-          content="Are you sure you want to log out?"
+          default={
+            <>
+              <span className="flex justify-center items-center">
+                Are you sure you want to log out?
+              </span>
+            </>
+          }
           setVisible={(isVisible: boolean) => setIsLogoutVisible(isVisible)}
           buttonFooter={
             <div className="flex gap-4 items-center justify-center mt-4">
@@ -100,7 +134,10 @@ export default function Sidebar(): JSX.Element {
               <Button
                 label="Log Out"
                 severity="danger"
-                onClick={() => router.push("/login")}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  router.push("/login");
+                }}
               />
             </div>
           }

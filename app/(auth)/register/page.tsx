@@ -1,22 +1,25 @@
 "use client";
 import { JSX, useState } from "react";
 import { FaRegCircle } from "react-icons/fa6";
-import { RegisterBody } from "../auth.dto";
 import { FaCheck } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
 import Button from "@/app/(main)/_components/button";
 import { FaGithub } from "react-icons/fa";
+import { RegisterBody } from "@/services/dto/auth.dto";
+import AuthService from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export default function Register(): JSX.Element {
+  const router = useRouter();
   const [form, setForm] = useState<RegisterBody>({
     fullName: "",
     email: "",
     password: "",
   });
-
   const [isAgreeToTerms, setIsAgreeToTerms] = useState<boolean>(false);
-
   const [validation, setValidation] = useState<
     RegisterBody & { isAgreeToTerms: string }
   >({
@@ -25,6 +28,7 @@ export default function Register(): JSX.Element {
     password: "",
     isAgreeToTerms: "",
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const inputMapping: {
     label: string;
@@ -93,7 +97,7 @@ export default function Register(): JSX.Element {
     },
   ];
 
-  const formValidation = (): boolean => {
+  const formValidation = (): RegisterBody & { isAgreeToTerms: string } => {
     const errors: RegisterBody & { isAgreeToTerms: string } = {
       fullName: "",
       email: "",
@@ -132,15 +136,34 @@ export default function Register(): JSX.Element {
 
     setValidation(errors);
 
-    return !errors.fullName && !errors.email && !errors.password;
+    return errors;
   };
 
-  const handleSubmit = (): void => {
-    formValidation();
-    const isValid = Object.values(validation).every((value) => !value);
+  const handleSubmit = async (): Promise<void> => {
+    const errors = formValidation();
+    const isValid = Object.values(errors).every((value) => !value);
 
-    if (isValid) {
-      console.log(form);
+    if (!isValid) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await AuthService.register(form);
+      router.push("/login");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          setValidation({
+            ...validation,
+            email: "Email already exists",
+          });
+        }
+      }
+      console.error(error);
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -203,8 +226,7 @@ export default function Register(): JSX.Element {
                 type="checkbox"
                 checked={isAgreeToTerms}
                 className={`w-4 h-4 hover:cursor-pointer accent-blue-500 ${
-                  validation.isAgreeToTerms !== "" &&
-                  "ring-1 ring-red-500"
+                  validation.isAgreeToTerms !== "" && "ring-1 ring-red-500"
                 }`}
                 onChange={(e) => {
                   setIsAgreeToTerms(e.target.checked);
@@ -231,6 +253,7 @@ export default function Register(): JSX.Element {
                 severity="blue"
                 boldLabel
                 onClick={handleSubmit}
+                isLoading={isLoading}
               />
               {validation.isAgreeToTerms && (
                 <span className="text-xs text-red-500">

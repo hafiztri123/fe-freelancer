@@ -1,12 +1,16 @@
 "use client";
 import { JSX, useState } from "react";
-import { LoginBody,  } from "../auth.dto";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
 import Button from "@/app/(main)/_components/button";
 import { FaGithub } from "react-icons/fa";
+import AuthService from "@/services/auth.service";
+import { LoginBody } from "@/services/dto/auth.dto";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-export default function Register(): JSX.Element {
+export default function Login(): JSX.Element {
+  const router = useRouter();
   const [form, setForm] = useState<LoginBody>({
     email: "",
     password: "",
@@ -16,6 +20,7 @@ export default function Register(): JSX.Element {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const inputMapping: {
     label: string;
@@ -33,7 +38,7 @@ export default function Register(): JSX.Element {
         setValidation({
           ...validation,
           email: "",
-        })
+        });
       },
       key: "email",
     },
@@ -46,32 +51,49 @@ export default function Register(): JSX.Element {
         setValidation({
           ...validation,
           password: "",
-        })
+        });
       },
       key: "password",
     },
   ];
-  
-const handleValidation = (): void => {
-  const errors: LoginBody = {
-    email: "",
-    password: "",
+
+  const handleValidation = (): LoginBody => {
+    const errors: LoginBody = {
+      email: "",
+      password: "",
+    };
+
+    if (!form.email) {
+      errors.email = "Email is required";
+    }
+
+    if (!form.password) {
+      errors.password = "Password is required";
+    }
+
+    setValidation(errors);
+    return errors;
   };
 
-  if (!form.email) {
-    errors.email = "Email is required";
-  }
+  const handleSubmit = async (): Promise<void> => {
+    const errors = handleValidation();
+    const isValid = Object.values(errors).every((value) => !value);
 
-  if (!form.password) {
-    errors.password = "Password is required";
-  }
+    if (!isValid) {
+      return;
+    }
 
-  setValidation(errors);
-}
-
-  const handleSubmit = (): void => {
-    handleValidation();
-    console.log(form);
+    setIsLoading(true);
+    try {
+      const { data } = await AuthService.login(form);
+      localStorage.setItem("token", data.data.token);
+      router.push("/dashboard")
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <>
@@ -91,7 +113,9 @@ const handleValidation = (): void => {
                 <input
                   type={input.type}
                   value={form[input.key]}
-                  className={`w-full ring ring-gray-300 rounded-md p-2.5 focus:outline-none focus:ring-blue-500 focus:ring-2  ${validation[input.key] && "ring-2 ring-red-500"} `}
+                  className={`w-full ring ring-gray-300 rounded-md p-2.5 focus:outline-none focus:ring-blue-500 focus:ring-2  ${
+                    validation[input.key] && "ring-2 ring-red-500"
+                  } `}
                   placeholder={input.placeholder}
                   onChange={input.onChange}
                 />
@@ -112,7 +136,10 @@ const handleValidation = (): void => {
                 <span className="text-xs text-gray-500">Remember me</span>
               </div>
 
-              <Link href={"/forgot-password"} className="text-xs text-blue-500 hover:underline" >
+              <Link
+                href={"/forgot-password"}
+                className="text-xs text-blue-500 hover:underline"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -123,6 +150,7 @@ const handleValidation = (): void => {
                 severity="blue"
                 boldLabel
                 onClick={handleSubmit}
+                isLoading={isLoading}
               />
             </div>
           </div>
