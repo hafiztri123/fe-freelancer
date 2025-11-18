@@ -87,7 +87,7 @@ export default function Login(): JSX.Element {
     try {
       const { data } = await AuthService.login(form);
       localStorage.setItem("token", data.data.token);
-      router.push("/dashboard")
+      router.push("/login")
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong, please try again");
