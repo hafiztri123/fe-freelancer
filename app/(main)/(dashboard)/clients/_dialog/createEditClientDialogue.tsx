@@ -1,10 +1,10 @@
 "use client";
 import Button from "@/app/(main)/_components/button";
-import Dialog from "@/app/_components/dialog";
+import Dialog from "@/app/_components/dialog/dialog";
 import { DropdownOption } from "@/app/_components/dropdown";
 import Dropdown from "@/app/_components/dropdown/dropdown";
-import TextAreaInput from "@/app/_components/textareaInput";
-import TextInput from "@/app/_components/textInput";
+import TextAreaInput from "@/app/_components/textareainput.tsx/textareaInput";
+import TextInput from "@/app/_components/textinput/textInput";
 import { removeEmptyStrings } from "@/app/_utils/removeEmptyStrings";
 import ClientService from "@/services/client.service";
 import { CreateClientBody, ErrorBody } from "@/services/dto/client.dto";

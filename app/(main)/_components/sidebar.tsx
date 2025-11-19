@@ -8,7 +8,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { IoAnalytics } from "react-icons/io5";
 import { IoIosSettings } from "react-icons/io";
 import { IoIosExit } from "react-icons/io";
-import Dialog from "../../_components/dialog";
+import Dialog from "../../_components/dialog/dialog";
 import Button from "./button";
 import { useRouter } from "next/navigation";
 import AuthService from "@/services/auth.service";

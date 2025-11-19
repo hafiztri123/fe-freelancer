@@ -1,15 +1,7 @@
 import { JSX } from "react";
 import { RxCross1 } from "react-icons/rx";
 
-interface DialogProps {
-  isVisible: boolean;
-  setVisible: (isVisible: boolean) => void;
-  header: string;
-  closable?: boolean;
-  default?: JSX.Element;
-  footer?: JSX.Element;
-  width?: number;
-}
+
 
 export default function Dialog(props: DialogProps): JSX.Element {
   return (
