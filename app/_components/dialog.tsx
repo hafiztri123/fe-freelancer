@@ -5,11 +5,10 @@ interface DialogProps {
   isVisible: boolean;
   setVisible: (isVisible: boolean) => void;
   header: string;
-  isClosable?: boolean;
+  closable?: boolean;
   default?: JSX.Element;
-  buttonFooter?: JSX.Element;
+  footer?: JSX.Element;
   width?: number;
-  
 }
 
 export default function Dialog(props: DialogProps): JSX.Element {
@@ -24,11 +23,11 @@ export default function Dialog(props: DialogProps): JSX.Element {
           >
             <div
               className={`flex ${
-                props.isClosable ? "justify-between" : "justify-center"
+                props.closable ? "justify-between" : "justify-center"
               } items-center mb-2`}
             >
               <span className="font-bold">{props.header}</span>
-              {props.isClosable && (
+              {props.closable && (
                 <RxCross1
                   className="cursor-pointer"
                   onClick={() => props.setVisible(false)}
@@ -38,7 +37,7 @@ export default function Dialog(props: DialogProps): JSX.Element {
 
             {props.default}
 
-            {props.buttonFooter}
+            {props.footer}
           </div>
         </div>
       )}

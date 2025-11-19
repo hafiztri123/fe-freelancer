@@ -18,6 +18,10 @@ const AuthService = {
   ): Promise<AxiosResponse<GenericResponse<LoginResponse>>> => {
     return API.post("/register", body);
   },
+
+  logout: (): Promise<AxiosResponse> => {
+    return API.post("/logout");
+  }
 };
 
 export default AuthService;

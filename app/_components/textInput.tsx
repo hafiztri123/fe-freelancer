@@ -1,13 +1,13 @@
-
-
 interface TextInputProps {
   model: string | number | readonly string[] | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
-  label: string;
+  label?: string;
   field: string;
   invalid?: string;
   mandatory?: boolean;
+  disabled?: boolean;
+  number?: boolean;
 }
 
 export default function TextInput(props: TextInputProps) {
@@ -15,17 +15,22 @@ export default function TextInput(props: TextInputProps) {
     <>
       <div className="flex flex-col gap-1 w-full">
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-gray-500 flex gap-1/2 font-medium tracking-[0.02em]">
-            {props.label}
-            {props.mandatory && <span className="text-red-500">*</span>}
-          </label>
+          {props.label && (
+            <label className="text-xs text-gray-500 flex gap-1/2 font-medium tracking-[0.02em]">
+              {props.label}
+              {props.mandatory && <span className="text-red-500">*</span>}
+            </label>
+          )}
           <input
-            type="text"
+            type={props.number ? "number" : "text"}
             name={props.field}
-            className={`border-0 ring-1 ring-gray-400 outline-0 text-sm  p-2 rounded focus:ring-2 focus:ring-blue-500 ${props.invalid && "ring-red-500"}`}
+            className={`border-0 ring-1 ring-gray-400 outline-0 text-sm  p-2 rounded focus:ring-2 focus:ring-blue-500 ${
+              props.invalid && "ring-red-500"
+            }`}
             placeholder={props.placeholder}
             value={props.model}
             onChange={props.onChange}
+            disabled={props.disabled}
           />
         </div>
 

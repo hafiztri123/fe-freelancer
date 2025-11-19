@@ -253,7 +253,7 @@ export default function Register(): JSX.Element {
                 severity="blue"
                 boldLabel
                 onClick={handleSubmit}
-                isLoading={isLoading}
+                loading={isLoading}
               />
               {validation.isAgreeToTerms && (
                 <span className="text-xs text-red-500">

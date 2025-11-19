@@ -5,9 +5,9 @@ import { AiOutlineLoading } from "react-icons/ai";
 interface ButtonProps {
   label: string;
   boldLabel?: boolean;
-  severity: "danger" | "dark" | "blue" | "clear";
+  severity: "danger" | "dark" | "blue" | "clear" | "success";
   icon?: IconType;
-  isLoading?: boolean;
+  loading?: boolean;
   onClick: () => void;
 }
 export default function Button(props: ButtonProps): JSX.Element {
@@ -17,6 +17,7 @@ export default function Button(props: ButtonProps): JSX.Element {
     blue: "bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white ",
     clear:
       "ring-gray-400 ring-1 hover:cursor-pointer text-sm hover:bg-gray-100",
+    success: "bg-green-500 hover:bg-green-600 hover:cursor-pointer text-white ",
   };
 
   return (
@@ -27,7 +28,7 @@ export default function Button(props: ButtonProps): JSX.Element {
         } ${props.boldLabel ? "font-bold" : ""} w-full`}
         onClick={props.onClick}
       >
-        {props.isLoading ? (
+        {props.loading ? (
           <div className="flex items-center justify-center">
             <AiOutlineLoading className="animate-spin" />
           </div>

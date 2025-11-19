@@ -11,6 +11,7 @@ import { IoIosExit } from "react-icons/io";
 import Dialog from "../../_components/dialog";
 import Button from "./button";
 import { useRouter } from "next/navigation";
+import AuthService from "@/services/auth.service";
 export default function Sidebar(): JSX.Element {
   const router = useRouter();
 
@@ -72,6 +73,16 @@ export default function Sidebar(): JSX.Element {
     },
   ];
 
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await AuthService.logout();
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+      router.push("/login");
+    }
+  };
+
   return (
     <>
       <div className="min-w-60 min-h-screen bg-[#2c3e50] flex flex-col">
@@ -124,7 +135,7 @@ export default function Sidebar(): JSX.Element {
             </>
           }
           setVisible={(isVisible: boolean) => setIsLogoutVisible(isVisible)}
-          buttonFooter={
+          footer={
             <div className="flex gap-4 items-center justify-center mt-4">
               <Button
                 label="Cancel"
@@ -134,10 +145,7 @@ export default function Sidebar(): JSX.Element {
               <Button
                 label="Log Out"
                 severity="danger"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  router.push("/login");
-                }}
+                onClick={handleLogout}
               />
             </div>
           }

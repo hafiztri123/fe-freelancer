@@ -7,6 +7,7 @@ interface TextAreaInputProps {
   invalid?: string;
   mandatory?: boolean;
   rows?: number;
+  disabled?: boolean;
 }
 
 export default function TextAreaInput(props: TextAreaInputProps) {
@@ -27,6 +28,7 @@ export default function TextAreaInput(props: TextAreaInputProps) {
             value={props.model}
             onChange={props.onChange}
             rows={props.rows && props.rows}
+            disabled={props.disabled}
           />
         </div>
 

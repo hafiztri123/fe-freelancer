@@ -8,3 +8,7 @@ export interface CreateClientBody {
   currency: string;
   paymentTerms: number;
 }
+
+export interface ErrorBody {
+  [key: string]: string;
+}
