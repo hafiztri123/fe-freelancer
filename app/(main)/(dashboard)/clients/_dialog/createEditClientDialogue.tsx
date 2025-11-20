@@ -15,6 +15,7 @@ import { toast } from "sonner";
 interface props {
   isVisible: boolean;
   setVisible: (isVisible: boolean) => void;
+  refresh: () => void;
 }
 
 export default function CreateEditDialogue(props: props): JSX.Element {
@@ -72,7 +73,7 @@ export default function CreateEditDialogue(props: props): JSX.Element {
       errors.currency = "Currency is required";
     }
 
-    if (!form.paymentTerms || form.paymentTerms === -1) {
+    if (form.paymentTerms === -1) {
       errors.paymentTerms = "Payment terms is required";
     }
 
@@ -126,6 +127,8 @@ export default function CreateEditDialogue(props: props): JSX.Element {
       if (!stayAfterSubmit) {
         props.setVisible(false);
       }
+
+      props.refresh();
     } catch (error) {
       console.error(error);
       if (error instanceof AxiosError) {

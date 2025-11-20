@@ -2,6 +2,12 @@ export interface Client {
   name: string;
   email: string;
   activeProjects: number;
-  totalRevenue: string;
-  outstanding: string;
+  totalRevenue: {
+    amount: string;
+    currency: string;
+  };
+  outstanding: {
+    amount: string;
+    currency: string;
+  };
 }

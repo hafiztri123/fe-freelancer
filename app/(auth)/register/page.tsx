@@ -151,6 +151,7 @@ export default function Register(): JSX.Element {
     try {
       await AuthService.register(form);
       router.push("/login");
+      toast.success("Success, account created");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
